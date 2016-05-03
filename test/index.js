@@ -61,7 +61,7 @@ describe('BaseModel', function () {
     return TestModel
       .findById(1000000)
       .then(() => Code.fail())
-      .catch(TestModel.Errors.NotFoundError, (err) => {
+      .catch(TestModel.Errors.NotFoundError, () => {
         expect(true).to.be.true()
       })
   })
@@ -78,7 +78,7 @@ describe('BaseModel', function () {
     return TestModel
       .update({ id: 1000000, name: 'some other name' })
       .then(() => Code.fail())
-      .catch(TestModel.Errors.NotUpdatedError, (err) => {
+      .catch(TestModel.Errors.NotUpdatedError, () => {
         expect(true).to.be.true()
       })
   })
@@ -95,7 +95,7 @@ describe('BaseModel', function () {
     return TestModel
       .remove(1000000)
       .then(() => Code.fail())
-      .catch(TestModel.Errors.NotRemovedError, (err) => {
+      .catch(TestModel.Errors.NotRemovedError, () => {
         expect(true).to.be.true()
       })
   })
@@ -108,6 +108,4 @@ describe('BaseModel', function () {
         expect(entry.isDeleted).to.be.true()
       })
   })
-
-
 })
