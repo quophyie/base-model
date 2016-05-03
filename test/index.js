@@ -76,7 +76,7 @@ describe('BaseModel', function () {
 
   it('should throw if entry.id does not exist in update', function () {
     return TestModel
-      .update({ id: 1000000, name: 'some other name' })
+      .updateById({ id: 1000000, name: 'some other name' })
       .then(() => Code.fail())
       .catch(TestModel.Errors.NotUpdatedError, () => {
         expect(true).to.be.true()
@@ -85,7 +85,7 @@ describe('BaseModel', function () {
 
   it('should update an entry', function () {
     return TestModel
-      .update({ id: 1000, name: 'some other name' })
+      .updateById({ id: 1000, name: 'some other name' })
       .then((entry) => {
         expect(entry).to.be.an.object()
       })
@@ -93,7 +93,7 @@ describe('BaseModel', function () {
 
   it('should throw if entry.id does not exist in remove', function () {
     return TestModel
-      .remove(1000000)
+      .removeById(1000000)
       .then(() => Code.fail())
       .catch(TestModel.Errors.NotRemovedError, () => {
         expect(true).to.be.true()
@@ -102,7 +102,7 @@ describe('BaseModel', function () {
 
   it('should remove an entry', function () {
     return TestModel
-      .remove(1000)
+      .removeById(1000)
       .then((entry) => {
         expect(entry).to.be.an.object()
         expect(entry.isDeleted).to.be.true()

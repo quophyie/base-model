@@ -4,7 +4,7 @@ A base model for all bookshelf-based models on our database layer.
 ## What it does
 + Adds `'createdDate'` and `'lastUpdatedDate'` timestamps to the Model (this can be changed by setting `hasTimestamps` to `false`);
 + Adds an 'isDeleted' column for setting the entry as removed, instead of hard-deleting it (this can be changed by setting `delAttribute`);
-+ Provides CRUD methods (`findAll`, `findById`, `insert`, `remove`, `update`);
++ Provides CRUD methods (`findAll`, `findById`, `insert`, `removeById`, `updateById`);
   + Returns plain javascript objects and exceptions, which creates a clear separation between bookshelf and your business
   logic code;
   + `remove` does not hard-delete, instead it sets the `is_deleted` column to `true` (this behaviour can be changed by
@@ -35,29 +35,29 @@ module.exports = bookshelf.model('MyModel', MyModel)
 ## API
 ### `findAll()`
  * Gets all entries from the database.
- * @returns {Promise.<Array>} A Promise resolving to the fetched entries array.
+ * `@returns {Promise.<Array>}` A Promise resolving to the fetched entries array.
 
 ### `findById(id)`
  * Gets an entry object by it's ID.
- * @param {number} id - The ID of the entry to get.
- * @returns {Promise.<Object>} A promise resolving to the fetched entry.
- * @throws {NotFoundError} An entry with the given `id` must exist.
+ * `@param {number} id` - The ID of the entry to get.
+ * `@returns {Promise.<Object>}` A promise resolving to the fetched entry.
+ * `@throws {NotFoundError}` An entry with the given `id` must exist.
 
 ### `insert(obj)`
  * Creates a new entry.
- * @param {object} obj - The object to be created.
- * @returns {Promise.<Object>} A Promise resolving to the newly created entry.
+ * `@param {object} obj` - The object to be created.
+ * `@returns {Promise.<Object>}` A Promise resolving to the newly created entry.
 
-### `remove(id)`
+### `removeById(id)`
  * Removes the given entry from the database.
- * @param {number} id - The entry ID.
- * @returns {Promise.<Object>} A Promise resolving to the destroyed entry.
- * @throws {NotFoundError} A Campaign with the given `id` must exist.
+ * `@param {number} id` - The entry ID.
+ * `@returns {Promise.<Object>}` A Promise resolving to the destroyed entry.
+ * `@throws {NotFoundError}` A Campaign with the given `id` must exist.
 
-### `update(obj)`
+### `updateById(obj)`
  * Updates an existing entry in the database.
- * @param {object} entry - The Campaign object to update.
- * @param {number} entry.id - The ID of the Campaign to update.
- * @returns {Promise.<Object>} A Promise resolving to the updated entry fields.
- * @throws {TypeError} `entry.id` must exist and be integer.
- * @throws {NotFoundError} An entry with the given `entry.id` must exist.
+ * `@param {object} entry` - The Campaign object to update.
+ * `@param {number} entry.id` - The ID of the Campaign to update.
+ * `@returns {Promise.<Object>}` A Promise resolving to the updated entry fields.
+ * `@throws {TypeError}` `entry.id` must exist and be integer.
+ * `@throws {NotFoundError}` An entry with the given `entry.id` must exist.
