@@ -100,12 +100,26 @@ describe('BaseModel', function () {
       })
   })
 
-  it('should remove an entry', function () {
+  it('should soft-remove an entry by default', function () {
     return TestModel
       .removeById(1000)
       .then((entry) => {
         expect(entry).to.be.an.object()
         expect(entry.isDeleted).to.be.true()
       })
+  })
+
+  it('should hard-remove an entry if delAttribute is set to false', function () {
+    TestModel.prototype.delAttribute = false  // This should be the same as declaring it in the Model definition
+    return TestModel
+      .removeById(1000)
+      .then((entry) => {
+        expect(entry).to.be.an.object()
+
+        return TestModel
+          .findById(1000)
+      })
+      .then((_) => Code.fail('entry should not exist'))
+      .catch(TestModel.Errors.NotFoundError, (_) => expect(true).to.be.true())
   })
 })
