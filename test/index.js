@@ -85,7 +85,7 @@ describe('BaseModel', function () {
 
   it('should update an entry', function () {
     return TestModel
-      .updateById(1000, {name: 'some other name' })
+      .updateById(1000, { name: 'some other name' })
       .then((entry) => {
         expect(entry).to.be.an.object()
       })
@@ -110,7 +110,7 @@ describe('BaseModel', function () {
   })
 
   it('should hard-remove an entry if delAttribute is set to false', function () {
-    TestModel.prototype.delAttribute = false  // This should be the same as declaring it in the Model definition
+    TestModel.prototype.delAttribute = false // This should be the same as declaring it in the Model definition
     return TestModel
       .removeById(1000)
       .then((entry) => {
