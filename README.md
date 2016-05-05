@@ -54,10 +54,10 @@ module.exports = bookshelf.model('MyModel', MyModel)
  * `@returns {Promise.<Object>}` A Promise resolving to the destroyed entry.
  * `@throws {NotFoundError}` A Campaign with the given `id` must exist.
 
-### `updateById(obj)`
+### `updateById(id, entry)`
  * Updates an existing entry in the database.
+ * `@param {number} id` - The ID of the Campaign to update.
  * `@param {object} entry` - The Campaign object to update.
- * `@param {number} entry.id` - The ID of the Campaign to update.
  * `@returns {Promise.<Object>}` A Promise resolving to the updated entry fields.
  * `@throws {TypeError}` `entry.id` must exist and be integer.
  * `@throws {NotFoundError}` An entry with the given `entry.id` must exist.
