@@ -1,3 +1,6 @@
+## v2.0.1
++ `removeById` now throws `NotRemovedError` if no rows are deleted in hard-deletes. Closes [#9](https://github.com/c8management/base-model/issues/9).
+
 ## v2.0.0
 + `updateById(id, data)` now takes 2 parameters, first is the entry `id` and the second is the entry payload which basically consists of fields that has to be updated  
 
