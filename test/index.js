@@ -109,6 +109,16 @@ describe('BaseModel', function () {
       })
   })
 
+  it('should throw if entry.id does not exist in a hard-remove', function () {
+    TestModel.prototype.delAttribute = false // This should be the same as declaring it in the Model definition
+    return TestModel
+      .removeById(1000000)
+      .then(() => Code.fail())
+      .catch(TestModel.Errors.NotRemovedError, () => {
+        expect(true).to.be.true()
+      })
+  })
+
   it('should hard-remove an entry if delAttribute is set to false', function () {
     TestModel.prototype.delAttribute = false // This should be the same as declaring it in the Model definition
     return TestModel
