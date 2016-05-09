@@ -5,16 +5,21 @@ const Code = require('code')
 const expect = Code.expect
 const bookshelf = require('./bookshelf')
 const BaseModel = require('../lib/index')(bookshelf)
+const knex = bookshelf.knex
 
 describe('BaseModel', function () {
   let TestModel
   let entry
+  let removedEntry
 
   before(function () {
     return bookshelf
       .knex
       .migrate
       .latest()
+      .then(() => {
+        return knex.raw('DELETE FROM "test_table";')
+      })
   })
 
   beforeEach(function () {
@@ -24,14 +29,23 @@ describe('BaseModel', function () {
 
     entry = new TestModel({
       id: 1000,
-      name: 'Marvel'
+      name: 'Marvel',
+      isDeleted: false
     })
 
-    return entry.save(null, { method: 'insert' })
+    removedEntry = new TestModel({
+      id: 1001,
+      name: 'Deleted',
+      isDeleted: true
+    })
+
+    return entry
+      .save(null, { method: 'insert' })
+      .then(() => removedEntry.save(null, { method: 'insert' }))
   })
 
   afterEach(function () {
-    return entry.destroy()
+    return knex.raw('DELETE FROM "test_table";')
   })
 
   it('should insert a new entry', function () {
@@ -53,7 +67,17 @@ describe('BaseModel', function () {
       .findAll()
       .then((entries) => {
         expect(entries).to.be.an.array()
-        expect(entries.length).to.be.above(0)
+        expect(entries.length).to.equal(1)
+      })
+  })
+
+  it('should find all entries including deleted', function () {
+    return TestModel
+      .findAll({ includeRemoved: true })
+      .then((entries) => {
+        console.log(entries)
+        expect(entries).to.be.an.array()
+        expect(entries.length).to.equal(2)
       })
   })
 
@@ -63,6 +87,23 @@ describe('BaseModel', function () {
       .then(() => Code.fail())
       .catch(TestModel.Errors.NotFoundError, () => {
         expect(true).to.be.true()
+      })
+  })
+
+  it('should throw if entry.id is a soft-deleted entry in findById', function () {
+    return TestModel
+      .findById(1001)
+      .then(() => Code.fail())
+      .catch(TestModel.Errors.NotFoundError, () => {
+        expect(true).to.be.true()
+      })
+  })
+
+  it('should find a soft-deleted entry by id', function () {
+    return TestModel
+      .findById(1001, { includeRemoved: true })
+      .then((entry) => {
+        expect(entry).to.be.an.object()
       })
   })
 
@@ -83,6 +124,23 @@ describe('BaseModel', function () {
       })
   })
 
+  it('should throw if entry.id is a soft-deleted entry in update', function () {
+    return TestModel
+      .updateById(1001, { name: 'some other name' })
+      .then(() => Code.fail())
+      .catch(TestModel.Errors.NotUpdatedError, () => {
+        expect(true).to.be.true()
+      })
+  })
+
+  it('should update a soft-deleted entry', function () {
+    return TestModel
+      .updateById(1001, { name: 'some other name' }, { includeRemoved: true })
+      .then((entry) => {
+        expect(entry).to.be.an.object()
+      })
+  })
+
   it('should update an entry', function () {
     return TestModel
       .updateById(1000, { name: 'some other name' })
@@ -94,6 +152,15 @@ describe('BaseModel', function () {
   it('should throw if entry.id does not exist in remove', function () {
     return TestModel
       .removeById(1000000)
+      .then(() => Code.fail())
+      .catch(TestModel.Errors.NotRemovedError, () => {
+        expect(true).to.be.true()
+      })
+  })
+
+  it('should throw if entry.id is a soft-deleted entry in remove', function () {
+    return TestModel
+      .removeById(1001)
       .then(() => Code.fail())
       .catch(TestModel.Errors.NotRemovedError, () => {
         expect(true).to.be.true()
