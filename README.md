@@ -8,7 +8,7 @@ A base model for all bookshelf-based models on our database layer.
   + Returns plain javascript objects and exceptions, which creates a clear separation between bookshelf and your business
   logic code;
   + `remove` does not hard-delete, instead it sets the `is_deleted` column to `true` (this behaviour can be changed by
-  overriding the function);
+  overriding the function or by setting `delAttribute` to false);
 
 **NOTE:** BaseMode assumes you're using the awesome [`bookshelf-camelcase`](https://www.npmjs.com/package/bookshelf-camelcase)
 plugin. If you're not, just set `hasTimestamps: ['created_date', 'last_updated_date']` and `delAttribute: 'is_deleted'`
