@@ -8,7 +8,7 @@ A base model for all bookshelf-based models on our database layer.
   + Returns plain javascript objects and exceptions, which creates a clear separation between bookshelf and your business
   logic code;
   + `remove` does not hard-delete, instead it sets the `is_deleted` column to `true` (this behaviour can be changed by
-  overriding the function);
+  overriding the function or by setting `delAttribute` to false);
 
 **NOTE:** BaseMode assumes you're using the awesome [`bookshelf-camelcase`](https://www.npmjs.com/package/bookshelf-camelcase)
 plugin. If you're not, just set `hasTimestamps: ['created_date', 'last_updated_date']` and `delAttribute: 'is_deleted'`
@@ -33,13 +33,17 @@ module.exports = bookshelf.model('MyModel', MyModel)
 ```
 
 ## API
-### `findAll()`
+### `findAll(opts)`
  * Gets all entries from the database.
+ * `@param {object} [opts]` An optional options object
+ * `@param {boolean} [opts.includeRemoved]` Find removed items as well
  * `@returns {Promise.<Array>}` A Promise resolving to the fetched entries array.
 
-### `findById(id)`
+### `findById(id, opts)`
  * Gets an entry object by it's ID.
  * `@param {number} id` - The ID of the entry to get.
+ * `@param {object} [opts]` An optional options object
+ * `@param {boolean} [opts.includeRemoved]` Find removed items as well
  * `@returns {Promise.<Object>}` A promise resolving to the fetched entry.
  * `@throws {NotFoundError}` An entry with the given `id` must exist.
 
@@ -54,10 +58,12 @@ module.exports = bookshelf.model('MyModel', MyModel)
  * `@returns {Promise.<Object>}` A Promise resolving to the destroyed entry.
  * `@throws {NotFoundError}` A Campaign with the given `id` must exist.
 
-### `updateById(id, entry)`
+### `updateById(id, entry, opts)`
  * Updates an existing entry in the database.
  * `@param {number} id` - The ID of the Campaign to update.
  * `@param {object} entry` - The Campaign object to update.
+ * `@param {object} [opts]` An optional options object
+ * `@param {boolean} [opts.includeRemoved]` Find removed items as well
  * `@returns {Promise.<Object>}` A Promise resolving to the updated entry fields.
  * `@throws {TypeError}` `entry.id` must exist and be integer.
  * `@throws {NotFoundError}` An entry with the given `entry.id` must exist.
