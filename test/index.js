@@ -75,7 +75,6 @@ describe('BaseModel', function () {
     return TestModel
       .findAll({ includeRemoved: true })
       .then((entries) => {
-        console.log(entries)
         expect(entries).to.be.an.array()
         expect(entries.length).to.equal(2)
       })
@@ -112,6 +111,24 @@ describe('BaseModel', function () {
       .findById(1000)
       .then((entry) => {
         expect(entry).to.be.an.object()
+      })
+  })
+
+  it('findWhere should find all entries that match the criteria', function () {
+    return TestModel
+      .findWhere({ name: 'Marvel' })
+      .then((entries) => {
+        expect(entries).to.be.an.array()
+        expect(entries.length).to.equal(1)
+      })
+  })
+
+  it('findWhere should find all entries that match the criteria, including deleted ones', function () {
+    return TestModel
+      .findWhere({ name: 'Deleted' }, { includeRemoved: true })
+      .then((entries) => {
+        expect(entries).to.be.an.array()
+        expect(entries.length).to.equal(1)
       })
   })
 

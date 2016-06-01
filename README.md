@@ -47,6 +47,13 @@ module.exports = bookshelf.model('MyModel', MyModel)
  * `@returns {Promise.<Object>}` A promise resolving to the fetched entry.
  * `@throws {NotFoundError}` An entry with the given `id` must exist.
 
+### `findWhere(where, opts)`
+ * Gets all entries that match the given criteria
+ * `@param {number} where` - The criteria to be met.
+ * `@param {object} [opts]` - An optional options object.
+ * `@param {boolean} [opts.includeRemoved]` - Find removed items as well.
+ * `@returns {Promise.<Array>}` - A promise resolving to the fetched entries array.
+
 ### `insert(obj)`
  * Creates a new entry.
  * `@param {object} obj` - The object to be created.
