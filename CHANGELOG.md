@@ -1,3 +1,7 @@
+## v3.1.0
++ Added `findWhere(where, opts)` function for conditional queries;
++ Replaced error dependency for `@c8/errors`;
+
 ## v3.0.0
 + `find*` functions return non-soft-removed items by default (`isDeleted: true`);
 + `updateById` and `removeById` functions modify non-soft-removed items by default;
