@@ -53,7 +53,6 @@ module.exports = bookshelf.model('MyModel', MyModel)
  * `@param {object} [opts]` - An optional options object.
  * `@param {boolean} [opts.includeRemoved]` - Find removed items as well.
  * `@returns {Promise.<Array>}` - A promise resolving to the fetched entries array.
- * `@throws {NotFoundError}` - No entries with the given criteria were found.
 
 ### `insert(obj)`
  * Creates a new entry.

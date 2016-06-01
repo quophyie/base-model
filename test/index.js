@@ -114,15 +114,6 @@ describe('BaseModel', function () {
       })
   })
 
-  it('findWhere should throw if no entries with matching criteria were found', function () {
-    return TestModel
-      .findWhere({ name: 'Deleted' })
-      .then(() => Code.fail())
-      .catch(TestModel.Errors.NotFoundError, () => {
-        expect(true).to.be.true()
-      })
-  })
-
   it('findWhere should find all entries that match the criteria', function () {
     return TestModel
       .findWhere({ name: 'Marvel' })
