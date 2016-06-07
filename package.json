@@ -1,6 +1,6 @@
 {
   "name": "@c8/base-model",
-  "version": "3.1.2",
+  "version": "3.1.3",
   "description": "A base model for all bookshelf-based models on our database layer.",
   "engines": {
     "node": "4.x.x"
