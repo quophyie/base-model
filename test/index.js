@@ -7,8 +7,11 @@ const bookshelf = require('./bookshelf')
 const BaseModel = require('../lib/index')(bookshelf)
 const knex = bookshelf.knex
 
+const Errors = require('@c8/errors')
+
 describe('BaseModel', function () {
   let TestModel
+  let EmptyModel
   let entry
   let removedEntry
 
@@ -25,6 +28,10 @@ describe('BaseModel', function () {
   beforeEach(function () {
     TestModel = BaseModel.extend({
       tableName: 'test_table'
+    })
+
+    EmptyModel = BaseModel.extend({
+      tableName: 'empty_table'
     })
 
     entry = new TestModel({
@@ -71,6 +78,15 @@ describe('BaseModel', function () {
       })
   })
 
+  it('find all entries from the empty_table', function () {
+    return EmptyModel
+      .findAll()
+      .then((entries) => Code.fail())
+      .catch(Errors.NotFoundError, (err) => {
+        expect(err).to.be.an.instanceof(Errors.NotFoundError)
+      })
+  })
+
   it('should find all entries including deleted', function () {
     return TestModel
       .findAll({ includeRemoved: true })
@@ -84,8 +100,8 @@ describe('BaseModel', function () {
     return TestModel
       .findById(1000000)
       .then(() => Code.fail())
-      .catch(TestModel.Errors.NotFoundError, () => {
-        expect(true).to.be.true()
+      .catch(Errors.NotFoundError, (err) => {
+        expect(err).to.be.an.instanceof(Errors.NotFoundError)
       })
   })
 
@@ -93,8 +109,8 @@ describe('BaseModel', function () {
     return TestModel
       .findById(1001)
       .then(() => Code.fail())
-      .catch(TestModel.Errors.NotFoundError, () => {
-        expect(true).to.be.true()
+      .catch(Errors.NotFoundError, (err) => {
+        expect(err).to.be.an.instanceof(Errors.NotFoundError)
       })
   })
 
@@ -136,8 +152,8 @@ describe('BaseModel', function () {
     return TestModel
       .updateById(1000000, { name: 'some other name' })
       .then(() => Code.fail())
-      .catch(TestModel.Errors.NotUpdatedError, () => {
-        expect(true).to.be.true()
+      .catch(Errors.NotFoundError, (err) => {
+        expect(err).to.be.an.instanceof(Errors.NotFoundError)
       })
   })
 
@@ -145,8 +161,8 @@ describe('BaseModel', function () {
     return TestModel
       .updateById(1001, { name: 'some other name' })
       .then(() => Code.fail())
-      .catch(TestModel.Errors.NotUpdatedError, () => {
-        expect(true).to.be.true()
+      .catch(Errors.NotFoundError, (err) => {
+        expect(err).to.be.an.instanceof(Errors.NotFoundError)
       })
   })
 
@@ -170,8 +186,8 @@ describe('BaseModel', function () {
     return TestModel
       .removeById(1000000)
       .then(() => Code.fail())
-      .catch(TestModel.Errors.NotRemovedError, () => {
-        expect(true).to.be.true()
+      .catch(Errors.NotFoundError, (err) => {
+        expect(err).to.be.an.instanceof(Errors.NotFoundError)
       })
   })
 
@@ -179,8 +195,8 @@ describe('BaseModel', function () {
     return TestModel
       .removeById(1001)
       .then(() => Code.fail())
-      .catch(TestModel.Errors.NotRemovedError, () => {
-        expect(true).to.be.true()
+      .catch(Errors.NotFoundError, (err) => {
+        expect(err).to.be.an.instanceof(Errors.NotFoundError)
       })
   })
 
@@ -198,8 +214,8 @@ describe('BaseModel', function () {
     return TestModel
       .removeById(1000000)
       .then(() => Code.fail())
-      .catch(TestModel.Errors.NotRemovedError, () => {
-        expect(true).to.be.true()
+      .catch(Errors.NotFoundError, (err) => {
+        expect(err).to.be.an.instanceof(Errors.NotFoundError)
       })
   })
 
@@ -214,6 +230,8 @@ describe('BaseModel', function () {
           .findById(1000)
       })
       .then((_) => Code.fail('entry should not exist'))
-      .catch(TestModel.Errors.NotFoundError, (_) => expect(true).to.be.true())
+      .catch(Errors.NotFoundError, (err) => {
+        expect(err).to.be.an.instanceof(Errors.NotFoundError)
+      })
   })
 })
