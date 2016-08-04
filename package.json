@@ -19,13 +19,13 @@
     "bookshelf",
     "model"
   ],
-  "author": "C8Management",
+  "author": "C8Management ",
   "bugs": {
     "url": "https://github.com/c8management/base-model/issues"
   },
   "homepage": "https://github.com/c8management/base-model#readme",
   "dependencies": {
-    "@c8/errors": "^0.1.x",
+    "@c8/errors": "^0.2.x",
     "lodash": "^4.12.0"
   },
   "devDependencies": {
