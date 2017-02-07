@@ -11,6 +11,7 @@ const Errors = require('@c8/errors')
 
 describe('BaseModel', function () {
   let TestModel
+  let TestRelated
   let EmptyModel
   let entry
   let removedEntry
@@ -20,14 +21,17 @@ describe('BaseModel', function () {
       .knex
       .migrate
       .latest()
-      .then(() => {
-        return knex.raw('DELETE FROM "test_table";')
-      })
+      .then(() => knex.raw('DELETE FROM "test_related";'))
+      .then(() => knex.raw('DELETE FROM "test_table";'))
   })
 
   beforeEach(function () {
     TestModel = BaseModel.extend({
       tableName: 'test_table'
+    })
+
+    TestRelated = BaseModel.extend({
+      tableName: 'test_related'
     })
 
     EmptyModel = BaseModel.extend({
@@ -52,7 +56,8 @@ describe('BaseModel', function () {
   })
 
   afterEach(function () {
-    return knex.raw('DELETE FROM "test_table";')
+    return knex.raw('DELETE FROM "test_related";')
+      .then(() => knex.raw('DELETE FROM "test_table";'))
   })
 
   it('should insert a new entry', function () {
@@ -81,9 +86,9 @@ describe('BaseModel', function () {
   it('find all entries from the empty_table', function () {
     return EmptyModel
       .findAll()
-      .then((entries) => Code.fail())
-      .catch(Errors.NotFoundError, (err) => {
-        expect(err).to.be.an.instanceof(Errors.NotFoundError)
+      .then((entries) => {
+        expect(entries).to.be.an.array()
+        expect(entries.length).to.equal(0)
       })
   })
 
@@ -233,5 +238,31 @@ describe('BaseModel', function () {
       .catch(Errors.NotFoundError, (err) => {
         expect(err).to.be.an.instanceof(Errors.NotFoundError)
       })
+  })
+
+  it('should create a related entry using transactions', function () {
+    return bookshelf.transaction(t => {
+      return TestModel
+        .transacting(t)
+        .insert({ name: 'Transaction Test' })
+        .then(test => TestRelated
+          .transacting(t)
+          .insert({ testId: test.id })
+        )
+    })
+  })
+
+  it('should rollback the transaction', function () {
+    return bookshelf.transaction(t => {
+      return TestModel
+        .transacting(t)
+        .insert({ name: 'Transaction Test' })
+        .then(test => TestRelated
+          .transacting(t)
+          .insert({ testId: null })
+        )
+    })
+    .then(() => Code.fail())
+    .catch(() => {})
   })
 })

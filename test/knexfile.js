@@ -9,7 +9,7 @@ module.exports = {
     client: 'postgresql',
     connection: {
       host: 'localhost',
-      port: process.env.PG_USER ? 5434 : 5432, // if theres a process.env.PG_USER, we're in Codeship
+      port: process.env.PG_PORT || 5432, // if theres a process.env.PG_USER, we're in Codeship
       database: process.env.PG_USER ? 'test' : 'base-model-test',
       user: process.env.PG_USER || 'postgres',
       password: process.env.PG_PASSWORD || 'admin'
