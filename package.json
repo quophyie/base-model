@@ -26,7 +26,6 @@
   "homepage": "https://github.com/c8management/base-model#readme",
   "dependencies": {
     "@c8/errors": "^0.2.x",
-    "bookshelf-transaction-manager": "^0.2.4",
     "lodash": "^4.17.4"
   },
   "devDependencies": {
