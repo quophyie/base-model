@@ -1,9 +1,9 @@
 {
-  "name": "@c8/base-model",
-  "version": "4.0.0",
-  "description": "A base model for all bookshelf-based models on our database layer.",
+  "name": "quantal-base-model",
+  "version": "0.0.1",
+  "description": "A base model for all bookshelf-based models on your database layer.",
   "engines": {
-    "node": "6"
+    "node": ">=6"
   },
   "main": "lib/index.js",
   "scripts": {
@@ -13,25 +13,32 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/c8management/base-model.git"
+    "url": "git+https://github.com/quophyie/base-model.git"
   },
   "keywords": [
     "bookshelf",
     "model"
   ],
-  "author": "C8Management ",
+  "author": "quophyie ",
   "bugs": {
-    "url": "https://github.com/c8management/base-model/issues"
+    "url": "https://github.com/quophyie/base-model/issues"
   },
-  "homepage": "https://github.com/c8management/base-model#readme",
+  "homepage": "https://github.com/quophyie/base-model#readme",
   "dependencies": {
-    "@c8/errors": "^0.2.x",
-    "lodash": "^4.17.4"
+    "lodash": "^4.17.4",
+    "quantal-errors": "0.0.1"
   },
+  "license": "ISC",
   "devDependencies": {
     "bookshelf": "^0.10.3",
     "bookshelf-camelcase": "^1.1.4",
     "code": "^4.0.0",
+    "eslint": "^3.17.1",
+    "eslint-config-standard": "^7.0.1",
+    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-node": "^4.2.1",
+    "eslint-plugin-promise": "^3.5.0",
+    "eslint-plugin-standard": "^2.1.1",
     "istanbul": "^0.4.5",
     "knex": "^0.12.6",
     "mocha": "^3.2.0",
